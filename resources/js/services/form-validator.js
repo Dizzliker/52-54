@@ -9,7 +9,7 @@ export default class FormValidator {
     }
 
     validate(data = {}) {
-        if (typeof data !== 'object') {
+        if (!checkType.isObject(data)) {
             return console.error('В качестве данных для валидации принимается только объект!');
         }
 
@@ -63,6 +63,9 @@ export default class FormValidator {
             });
         }
 
-        return validationErors;
+        return {
+            success: checkType.isEmptyObject(validationErors),
+            errors: validationErors,
+        };
     }
 };

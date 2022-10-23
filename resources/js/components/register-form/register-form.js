@@ -38,7 +38,7 @@ class RegisterForm extends Component {
         e.preventDefault();
 
         const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
-        const validationErors = this.formValidator.validate({
+        const {success, errors} = this.formValidator.validate({
             email: {
                 value: email,
                 types: ['required', 'email'],
@@ -61,8 +61,8 @@ class RegisterForm extends Component {
             }
         });
 
-        if (Object.keys(validationErors).length > 0) {
-            this.setState({formErrors: validationErors});
+        if (!success) {
+            this.setState({formErrors: errors});
             return;
         }
 

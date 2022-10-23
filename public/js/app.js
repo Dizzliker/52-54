@@ -8782,15 +8782,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _login_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login.form */ "./resources/js/components/login-form/login.form.js");
+/* harmony import */ var _login_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./login-form */ "./resources/js/components/login-form/login-form.js");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_login_form__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 /***/ }),
 
-/***/ "./resources/js/components/login-form/login.form.js":
+/***/ "./resources/js/components/login-form/login-form.js":
 /*!**********************************************************!*\
-  !*** ./resources/js/components/login-form/login.form.js ***!
+  !*** ./resources/js/components/login-form/login-form.js ***!
   \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -8801,9 +8801,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services */ "./resources/js/services/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8825,6 +8830,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -8835,45 +8843,122 @@ var LoginForm = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(LoginForm);
 
-  function LoginForm() {
+  function LoginForm(props) {
+    var _this;
+
     _classCallCheck(this, LoginForm);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "onFetchLogin", function (e) {
+      e.preventDefault();
+      var _this$state$formData = _this.state.formData,
+          login = _this$state$formData.login,
+          password = _this$state$formData.password;
+
+      var _this$formValidator$v = _this.formValidator.validate({
+        login: {
+          value: login,
+          types: ['required']
+        },
+        password: {
+          value: password,
+          types: ['required', 'min:8']
+        }
+      }),
+          success = _this$formValidator$v.success,
+          errors = _this$formValidator$v.errors;
+
+      if (!success) {
+        _this.setState({
+          formErrors: errors
+        });
+
+        return;
+      }
+    });
+
+    _this.state = {
+      formData: {
+        login: '',
+        password: ''
+      },
+      formErrors: {}
+    };
+    _this.formValidator = new _services__WEBPACK_IMPORTED_MODULE_1__.FormValidator();
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(LoginForm, [{
+    key: "handleChange",
+    value: function handleChange(event) {
+      this.setState({
+        formData: _objectSpread(_objectSpread({}, this.state.formData), {}, _defineProperty({}, event.target.name, event.target.value))
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      var _this$state$formData2 = this.state.formData,
+          login = _this$state$formData2.login,
+          password = _this$state$formData2.password;
+      var _this$state$formError = this.state.formErrors,
+          loginError = _this$state$formError.loginError,
+          passwordError = _this$state$formError.passwordError;
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
         className: "login-container",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("form", {
-          action: "#",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+          onSubmit: this.onFetchLogin,
           className: "login-form",
           method: "post",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h3", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
             className: "header-3",
             children: "\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
             className: "input-field",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
               type: "text",
               className: "input email error",
               name: "email",
+              value: login,
+              onChange: this.handleChange,
               placeholder: "\u0412\u0430\u0448\u0430 \u043F\u043E\u0447\u0442\u0430"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            }), loginError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "input__error-container",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                className: "input__error-icon",
+                src: "/images/danger-icon.svg",
+                alt: "\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435!"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+                className: "input__error-text",
+                children: loginError
+              })]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
             className: "input-field",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
               type: "password",
               className: "input password",
               name: "password",
+              value: password,
+              onChange: this.handleChange,
               placeholder: "\u041F\u0430\u0440\u043E\u043B\u044C"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-            type: "button",
+            }), passwordError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+              className: "input__error-container",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                className: "input__error-icon",
+                src: "/images/danger-icon.svg",
+                alt: "\u0412\u043D\u0438\u043C\u0430\u043D\u0438\u0435!"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+                className: "input__error-text",
+                children: passwordError
+              })]
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
             className: "btn btn-primary",
             children: "\u0412\u043E\u0439\u0442\u0438"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
             to: "/register",
             className: "login-form__link link",
             children: "\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043E\u0432\u0430\u0442\u044C\u0441\u044F"
@@ -8967,7 +9052,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           passwordConfirm = _this$state$formData.passwordConfirm,
           userAgreement = _this$state$formData.userAgreement;
 
-      var validationErors = _this.formValidator.validate({
+      var _this$formValidator$v = _this.formValidator.validate({
         email: {
           value: email,
           types: ['required', 'email']
@@ -8988,11 +9073,13 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           value: userAgreement,
           types: ['required']
         }
-      });
+      }),
+          success = _this$formValidator$v.success,
+          errors = _this$formValidator$v.errors;
 
-      if (Object.keys(validationErors).length > 0) {
+      if (!success) {
         _this.setState({
-          formErrors: validationErors
+          formErrors: errors
         });
 
         return;
@@ -9502,6 +9589,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "isEmail": () => (/* binding */ isEmail),
 /* harmony export */   "isEmpty": () => (/* binding */ isEmpty),
+/* harmony export */   "isEmptyObject": () => (/* binding */ isEmptyObject),
 /* harmony export */   "isMax": () => (/* binding */ isMax),
 /* harmony export */   "isMin": () => (/* binding */ isMin),
 /* harmony export */   "isObject": () => (/* binding */ isObject)
@@ -9520,6 +9608,14 @@ var isEmail = function isEmail(value) {
 
 var isObject = function isObject(value) {
   return _typeof(value) === 'object' && !Array.isArray(value);
+};
+
+var isEmptyObject = function isEmptyObject(value) {
+  if (!isObject(value)) {
+    console.error('В качестве проверки на пустое значение принимается только объект!');
+  }
+
+  return Object.keys(value).length > 0 ? false : true;
 };
 
 var isMin = function isMin(string, _char) {
@@ -9731,7 +9827,7 @@ var FormValidator = /*#__PURE__*/function () {
 
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      if (_typeof(data) !== 'object') {
+      if (!_check_types__WEBPACK_IMPORTED_MODULE_0__.isObject(data)) {
         return console.error('В качестве данных для валидации принимается только объект!');
       }
 
@@ -9799,7 +9895,10 @@ var FormValidator = /*#__PURE__*/function () {
         if (_typeof(_ret) === "object") return _ret.v;
       }
 
-      return validationErors;
+      return {
+        success: _check_types__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject(validationErors),
+        errors: validationErors
+      };
     }
   }]);
 
