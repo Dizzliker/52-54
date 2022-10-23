@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { AuthLayout } from "../layouts";
 import LoginForm from '../components/login-form';
+import {LeftSide, RightSide} from '../components/auth';
 import { PageService } from "../services";
 
 export default class LoginPage extends Component {
@@ -10,9 +10,12 @@ export default class LoginPage extends Component {
 
     render() {
         return (
-            <AuthLayout>
-                <LoginForm />
-            </AuthLayout>
+            <>
+                <LeftSide />
+                <RightSide>
+                    <LoginForm />
+                </RightSide>
+            </>
         );
     }
 }

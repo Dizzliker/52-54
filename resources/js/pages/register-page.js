@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {AuthLayout} from '../layouts';
+import { LeftSide, RightSide } from "../components/auth";
 import RegisterForm from "../components/register-form/register-form";
 import { PageService } from "../services";
 
@@ -10,9 +10,12 @@ export default class RegisterPage extends Component {
 
     render() {
         return (
-            <AuthLayout>
-                <RegisterForm />
-            </AuthLayout>
+            <>
+                <LeftSide />
+                <RightSide>
+                    <RegisterForm />
+                </RightSide>
+            </>
         );
     }
 }

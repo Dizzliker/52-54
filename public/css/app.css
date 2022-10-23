@@ -7,6 +7,7 @@
 :root {
   --primary: #3279AF;
   --primary-hover: #2E70A3;
+  --primary-disabled: #679BC1;
   --main-text-dark: #575757;
   --main-text-white: #fff;
   --secondary: #ccc;
@@ -167,6 +168,18 @@ body {
 .agreement-container .agreement-text {
   color: var(--main-text-dark); 
   user-select: none;
+}
+
+.btn.disabled {
+  background-color: var(--primary-disabled);
+}
+
+.btn.btn-primary.disabled {
+  background-color: var(--primary-disabled);
+}
+
+.btn.btn-primary.disabled:hover {
+  background-color: var(--primary-disabled);
 }
 
 .btn.btn-primary {

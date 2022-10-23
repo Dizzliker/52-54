@@ -4,43 +4,8 @@ export default class FormValidator {
             error: 'Error',
             confirm: 'Confirm',
         };
-        this.emailRegex = '^\S+@\S+\.\S+$';
+        this.emailRegex = /^\S+@\S+\.\S+$/;
     }
-
-    // validate(data = {}) {
-    //     if (typeof data !== 'object' && !Array.isArray(data)) {
-    //         return console.error('В качестве данных для валидации принимается только объект!');
-    //     }
-
-    //     const validationErrors = {};
-
-    //     for (const key in data) {
-    //         if (!Array.isArray(data[key])) {
-    //             return console.error('В качестве аргумента валидации приниматеся только массив!');
-    //         }
-
-    //         const inputValue = data[key][0];
-
-    //         for (let i = 1; i < data[key].length; i++) {
-    //             const validation = data[key][i];
-
-    //             if (validation === 'required') {
-    //                 if (this.isEmpty(inputValue)) {
-    //                     validationErrors[`${key}Error`] = 'Поле обязательно для заполнения';
-    //                     continue;
-    //                 }
-    //             }
-    //             if (validation === 'email') {
-    //                 if (this.isEmail(inputValue)) {
-    //                     validationErrors[`${key}Error`] = 'Неверный формат почты';
-    //                     continue;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return validationErrors;
-    // }
 
     validate(data = {}) {
         if (typeof data !== 'object') {
@@ -99,7 +64,7 @@ export default class FormValidator {
     }
 
     isEmail(value) {
-        return this.emailRegex.match(value);
+        return value.match(this.emailRegex) === null ? false : true;
     }
 
     isObject(value) {

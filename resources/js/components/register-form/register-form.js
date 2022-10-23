@@ -14,6 +14,7 @@ class RegisterForm extends Component {
                 nickname: '',
                 password: '',
                 passwordConfirm: '',
+                userAgreement: true,
             },
             formErrors: {},
         };
@@ -23,13 +24,12 @@ class RegisterForm extends Component {
 
     handleChange(event) {
         const target = event.target;
-        const value = target.value;
-        const name = target.name;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
     
         this.setState({
             formData: {
                 ...this.state.formData,
-                [name]: value
+                [target.name]: value
             }
         });
     }
@@ -37,7 +37,7 @@ class RegisterForm extends Component {
     onFetchRegister = (e) => {
         e.preventDefault();
 
-        const {email, nickname, password, passwordConfirm} = this.state.formData;
+        const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
         const validationErors = this.formValidator.validate({
             email: {
                 value: email,
@@ -55,6 +55,10 @@ class RegisterForm extends Component {
                 value: passwordConfirm,
                 types: ['required', 'min:8'],
             },
+            userAgreement: {
+                value: userAgreement,
+                types: ['required'],
+            }
         });
 
         if (Object.keys(validationErors).length > 0) {
@@ -66,8 +70,8 @@ class RegisterForm extends Component {
     }
 
     render() {
-        const {email, nickname, password, passwordConfirm} = this.state.formData;
-        const {emailError, nicknameError, passwordError, passwordConfirmError} = this.state.formErrors;
+        const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
+        const {emailError, nicknameError, passwordError, passwordConfirmError, userAgreementError} = this.state.formErrors;
 
         return (
             <div className="register-container">
@@ -112,11 +116,11 @@ class RegisterForm extends Component {
                     </div>
                     
                     <label htmlFor="agreement-checkbox" className="agreement-container">
-                        <input type="checkbox" id="agreement-checkbox" className="agreement-checkbox" name="user-agreement"/>
+                        <input type="checkbox" id="agreement-checkbox" className="agreement-checkbox" name="userAgreement" checked={userAgreement} onChange={this.handleChange}/>
                         <span className="agreement-text">Я согласен с пользовательским соглашением</span>
                     </label>
                         
-                    <button className="btn btn-primary">Зарегистрироваться</button>
+                    <button className={`btn btn-primary ${userAgreement ? '' : 'disabled'}`} disabled={!userAgreement}>Зарегистрироваться</button>
                     
                     <Link to='/' className="register-form__link link">
                         У меня уже есть аккаунт

@@ -16,5 +16,3 @@ export default class AuthLayout extends Component {
         );
     }
 };
-
-export {AuthLayout}
