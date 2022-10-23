@@ -45,7 +45,7 @@ class RegisterForm extends Component {
             },
             nickname: {
                 value: nickname,
-                types: ['required'],
+                types: ['required', 'max:25'],
             },
             password: {
                 value: password,
@@ -71,7 +71,7 @@ class RegisterForm extends Component {
 
     render() {
         const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
-        const {emailError, nicknameError, passwordError, passwordConfirmError, userAgreementError} = this.state.formErrors;
+        const {emailError, nicknameError, passwordError, passwordConfirmError} = this.state.formErrors;
 
         return (
             <div className="register-container">

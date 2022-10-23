@@ -1,3 +1,5 @@
+import { isObject } from "./check-types";
+
 export default class FetchService {
     constructor() {
         this._api = `${location.origin}/api`;
@@ -43,7 +45,7 @@ export default class FetchService {
     };
 
     toFormData = (data = {}) => {
-        if (typeof data !== 'object' && Array.isArray(data)) {
+        if (!isObject(data)) {
             return console.error('В качестве данных принимается только объект!');
         }
         const formData = new FormData();

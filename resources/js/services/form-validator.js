@@ -1,10 +1,11 @@
+import * as checkType from './check-types';
+
 export default class FormValidator {
     constructor() {
         this.postfix = {
             error: 'Error',
             confirm: 'Confirm',
         };
-        this.emailRegex = /^\S+@\S+\.\S+$/;
     }
 
     validate(data = {}) {
@@ -15,7 +16,7 @@ export default class FormValidator {
         const validationErors = {};
 
         for (const key in data) {
-            if (!this.isObject(data[key])) {
+            if (!checkType.isObject(data[key])) {
                 return console.error('В качестве свойств валидации принимается только объект!');
             }
 
@@ -28,20 +29,26 @@ export default class FormValidator {
                 const ruleValue = validationRule[1];
 
                 if (type === 'required') {
-                    if (this.isEmpty(value)) {
+                    if (checkType.isEmpty(value)) {
                         validationErors[errorKey] = 'Поле обязательно для заполнения';
                         return true;
                     }
                 }
                 if (type === 'email') {
-                    if (!this.isEmail(value)) {
+                    if (!checkType.isEmail(value)) {
                         validationErors[errorKey] = 'Неверный формат почты';
                         return true;
                     }
                 }
                 if (type === 'min') {
-                    if (!this.isMin(value, ruleValue)) {
+                    if (!checkType.isMin(value, ruleValue)) {
                         validationErors[errorKey] = `Минимальная длина поля ${ruleValue} символов`;
+                        return true;
+                    }
+                }
+                if (type === 'max') {
+                    if (!checkType.isMax(value, ruleValue)) {
+                        validationErors[errorKey] = `Максимальная длина поля ${ruleValue} символов`;
                         return true;
                     }
                 }
@@ -57,21 +64,5 @@ export default class FormValidator {
         }
 
         return validationErors;
-    }
-
-    isEmpty(value) {
-        return value ? false : true;
-    }
-
-    isEmail(value) {
-        return value.match(this.emailRegex) === null ? false : true;
-    }
-
-    isObject(value) {
-        return typeof value === 'object' && !Array.isArray(value);
-    }
-
-    isMin(string, char) {
-        return string.length >= +char ? true : false; 
     }
 };
