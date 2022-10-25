@@ -30,7 +30,11 @@ class RegisterForm extends Component {
             formData: {
                 ...this.state.formData,
                 [target.name]: value
-            }
+            },
+            formErrors: {
+                ...this.state.formErrors,
+                [`${target.name}${this.formValidator.postfix.error}`]: '',
+            },
         });
     }
 

@@ -40,6 +40,22 @@ export default class User {
                     loading: false,
                     error: true,
                 });
+            case 'FETCH_LOGIN_REQUEST':
+                this.setData({
+                    loading: true,
+                    error: false,
+                });
+            case 'FETCH_LOGIN_SUCCESS':
+                this.setData({
+                    loading: false,
+                    error: false,
+                    ...action.payload,
+                });
+            case 'FETCH_LOGIN_FAILURE':
+                this.setData({
+                    loading: false,
+                    error: action.payload,
+                });
             default:
                 return state.authUser;
         }

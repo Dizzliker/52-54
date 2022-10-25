@@ -28,6 +28,10 @@ const isMax = (string, char) => {
     return string.length <= +char ? true : false;
 };
 
+const isString = (value) => {
+    return typeof value === 'string' ? true : false;
+};
+
 export {
     isEmpty,
     isEmail,
@@ -35,4 +39,5 @@ export {
     isEmptyObject,
     isMin,
     isMax,
+    isString,
 };

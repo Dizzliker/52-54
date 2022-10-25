@@ -1,13 +1,16 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { FormValidator } from "../../services";
+import { bindActionCreators } from "redux";
+import { fetchLogin } from "../../actions";
+import { FormValidator, LoginService } from "../../services";
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             formData: {
-                login: '',
+                email: '',
                 password: '',
             },
             formErrors: {},
@@ -28,11 +31,11 @@ export default class LoginForm extends Component {
     onFetchLogin = (e) => {
         e.preventDefault();
 
-        const {login, password} = this.state.formData;
+        const {email, password} = this.state.formData;
         const {success, errors} = this.formValidator.validate({
-            login: {
-                value: login,
-                types: ['required'],
+            email: {
+                value: email,
+                types: ['required', 'email'],
             },
             password: {
                 value: password,
@@ -44,11 +47,13 @@ export default class LoginForm extends Component {
             this.setState({formErrors: errors});
             return;
         }
+
+        this.props.fetchLogin(this.state.formData);
     }
 
     render() {
-        const {login, password} = this.state.formData;
-        const {loginError, passwordError} = this.state.formErrors;
+        const {email, password} = this.state.formData;
+        const {emailError, passwordError} = this.state.formErrors;
 
         return (
             <div className="login-container">
@@ -56,11 +61,11 @@ export default class LoginForm extends Component {
                     <h3 className="header-3">Авторизация</h3>
 
                     <div className="input-field">
-                        <input type="text" className="input email error" name="email" value={login} onChange={this.handleChange} placeholder="Ваша почта"/>
-                        {loginError && 
+                        <input type="text" className="input email error" name="email" value={email} onChange={this.handleChange} placeholder="Ваша почта"/>
+                        {emailError && 
                             <div className="input__error-container">
                                 <img className="input__error-icon" src="/images/danger-icon.svg" alt="Внимание!"/>
-                                <span className="input__error-text">{loginError}</span>
+                                <span className="input__error-text">{emailError}</span>
                             </div>
                         }
                     </div>
@@ -83,4 +88,18 @@ export default class LoginForm extends Component {
             </div>
         );
     }
-}
+};
+
+const mapStateToProps = ({authUser}) => {
+    return {
+        authUser,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        fetchLogin: fetchLogin(new LoginService(), dispatch), 
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
