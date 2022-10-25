@@ -15,6 +15,7 @@ class RegisterForm extends Component {
                 password: '',
                 passwordConfirm: '',
                 userAgreement: true,
+                userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             },
             formErrors: {},
         };
@@ -41,7 +42,7 @@ class RegisterForm extends Component {
     onFetchRegister = (e) => {
         e.preventDefault();
 
-        const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
+        const {email, nickname, password, passwordConfirm, userAgreement, userTimezone} = this.state.formData;
         const {success, errors} = this.formValidator.validate({
             email: {
                 value: email,
@@ -62,6 +63,10 @@ class RegisterForm extends Component {
             userAgreement: {
                 value: userAgreement,
                 types: ['required'],
+            },
+            userTimezone: {
+                value: userTimezone,
+                types: ['required', 'string'],
             }
         });
 
@@ -74,7 +79,7 @@ class RegisterForm extends Component {
     }
 
     render() {
-        const {email, nickname, password, passwordConfirm, userAgreement} = this.state.formData;
+        const {email, nickname, password, passwordConfirm, userAgreement, userTimezone} = this.state.formData;
         const {emailError, nicknameError, passwordError, passwordConfirmError} = this.state.formErrors;
 
         return (
@@ -118,6 +123,8 @@ class RegisterForm extends Component {
                             </div>
                         }
                     </div>
+
+                    <input type="hidden" name="userTimezone" value={userTimezone} />
                     
                     <label htmlFor="agreement-checkbox" className="agreement-container">
                         <input type="checkbox" id="agreement-checkbox" className="agreement-checkbox" name="userAgreement" checked={userAgreement} onChange={this.handleChange}/>

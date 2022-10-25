@@ -9109,7 +9109,8 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           nickname = _this$state$formData.nickname,
           password = _this$state$formData.password,
           passwordConfirm = _this$state$formData.passwordConfirm,
-          userAgreement = _this$state$formData.userAgreement;
+          userAgreement = _this$state$formData.userAgreement,
+          userTimezone = _this$state$formData.userTimezone;
 
       var _this$formValidator$v = _this.formValidator.validate({
         email: {
@@ -9131,6 +9132,10 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
         userAgreement: {
           value: userAgreement,
           types: ['required']
+        },
+        userTimezone: {
+          value: userTimezone,
+          types: ['required', 'string']
         }
       }),
           success = _this$formValidator$v.success,
@@ -9153,7 +9158,8 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
         nickname: '',
         password: '',
         passwordConfirm: '',
-        userAgreement: true
+        userAgreement: true,
+        userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone
       },
       formErrors: {}
     };
@@ -9180,7 +9186,8 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           nickname = _this$state$formData2.nickname,
           password = _this$state$formData2.password,
           passwordConfirm = _this$state$formData2.passwordConfirm,
-          userAgreement = _this$state$formData2.userAgreement;
+          userAgreement = _this$state$formData2.userAgreement,
+          userTimezone = _this$state$formData2.userTimezone;
       var _this$state$formError = this.state.formErrors,
           emailError = _this$state$formError.emailError,
           nicknameError = _this$state$formError.nicknameError,
@@ -9275,6 +9282,10 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
                 children: passwordConfirmError
               })]
             })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            type: "hidden",
+            name: "userTimezone",
+            value: userTimezone
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("label", {
             htmlFor: "agreement-checkbox",
             className: "agreement-container",
@@ -9966,6 +9977,13 @@ var FormValidator = /*#__PURE__*/function () {
             if (value !== valueConfirm) {
               validationErors["".concat(key).concat(_this.postfix.error)] = 'Значение полей не совпадает';
               validationErors["".concat(key).concat(_this.postfix.confirm).concat(_this.postfix.error)] = 'Значение полей не совпадает';
+              return true;
+            }
+          }
+
+          if (type === 'string') {
+            if (!_check_types__WEBPACK_IMPORTED_MODULE_0__.isString(value)) {
+              validationErors[errorKey] = 'Значение поля должно быть строкой';
               return true;
             }
           }

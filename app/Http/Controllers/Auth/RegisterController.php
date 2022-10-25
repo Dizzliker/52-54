@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,17 +17,22 @@ class RegisterController extends Controller
             'email'           => 'required|email|unique:users|min:9',
             'password'        => 'required_with:passwordConfirm|same:passwordConfirm|min:8',
             'passwordConfirm' => 'required|min:8',
+            'userTimezone'    => 'required',
         ]);
+
+        $createdAt = (new DateTimeImmutable())->getTimestamp();
 
         $user = User::create([
             'nickname'   => $fields['nickname'],
             'email'      => $fields['email'],
             'password'   => Hash::make($fields['password']),
-            'created_at' => now(),
+            'timezone'   => $fields['userTimezone'],
+            'updated_at' => $createdAt,
+            'created_at' => $createdAt,
         ]);
 
         Auth::guard()->attempt($request->only('email', 'password'), true);
         
-        return response(['data' => $user]);
+        return response(['success' => true, 'data' => $user]);
     }
 }

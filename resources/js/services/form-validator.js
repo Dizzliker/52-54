@@ -60,6 +60,12 @@ export default class FormValidator {
                         return true;
                     }
                 }
+                if (type === 'string') {
+                    if (!checkType.isString(value)) {
+                        validationErors[errorKey] = 'Значение поля должно быть строкой';
+                        return true;
+                    }
+                }
             });
         }
 
