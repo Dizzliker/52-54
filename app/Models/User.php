@@ -43,16 +43,8 @@ class User extends Authenticatable
     ];
 
     public static function login($email, $password) {
-        $user = DB::selectOne('
-            select u.ID
-                   u.NICKNAME,
-                   u.EMAIL,
-                   u.CREATED_BY
-              from USERS u
-             where u.EMAIL = '.$email.'
-               and u.PASSWORD = '.Hash::make($password).' 
-        ');
+        $user = User::where('email', $email)->first();
 
-        return empty($user) ? null : $user;
+        return $user && Hash::check($password, $user->password) ? $user : null;
     }
 }

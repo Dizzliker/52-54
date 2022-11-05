@@ -8925,7 +8925,8 @@ var LoginForm = /*#__PURE__*/function (_Component) {
     _this.state = {
       formData: {
         email: '',
-        password: ''
+        password: '',
+        userRemember: true
       },
       formErrors: {}
     };
@@ -8937,8 +8938,11 @@ var LoginForm = /*#__PURE__*/function (_Component) {
   _createClass(LoginForm, [{
     key: "handleChange",
     value: function handleChange(event) {
+      var target = event.target;
+      var value = target.type === 'checkbox' ? target.checked : target.value;
       this.setState({
-        formData: _objectSpread(_objectSpread({}, this.state.formData), {}, _defineProperty({}, event.target.name, event.target.value))
+        formData: _objectSpread(_objectSpread({}, this.state.formData), {}, _defineProperty({}, target.name, value)),
+        formErrors: _objectSpread(_objectSpread({}, this.state.formErrors), {}, _defineProperty({}, "".concat(target.name).concat(this.formValidator.postfix.error), ''))
       });
     }
   }, {
@@ -8946,7 +8950,8 @@ var LoginForm = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this$state$formData2 = this.state.formData,
           email = _this$state$formData2.email,
-          password = _this$state$formData2.password;
+          password = _this$state$formData2.password,
+          userRemember = _this$state$formData2.userRemember;
       var _this$state$formError = this.state.formErrors,
           emailError = _this$state$formError.emailError,
           passwordError = _this$state$formError.passwordError;
@@ -8999,6 +9004,23 @@ var LoginForm = /*#__PURE__*/function (_Component) {
                 children: passwordError
               })]
             })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "remember-container",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("label", {
+              htmlFor: "remember-checkbox",
+              className: "remember-label",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+                type: "checkbox",
+                id: "remember-checkbox",
+                className: "remember-checkbox",
+                name: "userRemember",
+                checked: userRemember,
+                onChange: this.handleChange
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+                className: "remember-text",
+                children: "\u0417\u0430\u043F\u043E\u043C\u043D\u0438\u0442\u044C \u043C\u0435\u043D\u044F"
+              })]
+            })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
             className: "btn btn-primary",
             children: "\u0412\u043E\u0439\u0442\u0438"
@@ -10159,14 +10181,12 @@ var PageService = /*#__PURE__*/_createClass(function PageService() {
   _classCallCheck(this, PageService);
 });
 
-_defineProperty(PageService, "title", document.querySelector('title'));
-
 _defineProperty(PageService, "setTitle", function (newTitle) {
   if (!(0,_check_types__WEBPACK_IMPORTED_MODULE_0__.isString)(newTitle)) {
     return console.error('В качестве заголовка страницы принимается только строка!');
   }
 
-  PageService.title.textContent = newTitle;
+  document.title = newTitle;
 });
 
 

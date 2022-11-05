@@ -12,6 +12,7 @@ class LoginForm extends Component {
             formData: {
                 email: '',
                 password: '',
+                userRemember: true,
             },
             formErrors: {},
         };
@@ -20,11 +21,18 @@ class LoginForm extends Component {
     }
 
     handleChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+    
         this.setState({
             formData: {
                 ...this.state.formData,
-                [event.target.name]: event.target.value
-            }
+                [target.name]: value
+            },
+            formErrors: {
+                ...this.state.formErrors,
+                [`${target.name}${this.formValidator.postfix.error}`]: '',
+            },
         });
     }
 
@@ -52,7 +60,7 @@ class LoginForm extends Component {
     }
 
     render() {
-        const {email, password} = this.state.formData;
+        const {email, password, userRemember} = this.state.formData;
         const {emailError, passwordError} = this.state.formErrors;
 
         return (
@@ -77,6 +85,13 @@ class LoginForm extends Component {
                                 <span className="input__error-text">{passwordError}</span>
                             </div>
                         }
+                    </div>
+
+                    <div className="remember-container">
+                        <label htmlFor="remember-checkbox" className="remember-label">
+                            <input type="checkbox" id="remember-checkbox" className="remember-checkbox" name="userRemember" checked={userRemember} onChange={this.handleChange}/>
+                            <span className="remember-text">Запомнить меня</span>
+                        </label>
                     </div>
                      
                     <button className="btn btn-primary">Войти</button>
