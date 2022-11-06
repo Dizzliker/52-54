@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
+use Illuminate\Support\Arr;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -37,5 +39,35 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function convertValidationExceptionToResponse(ValidationException $e, $request)
+    {
+        if($e instanceof ValidationException && $request->expectsJson()) {
+            return response()->json([
+                "status" => false,
+                "errors" =>  $e->errors()
+            ], 422);
+        } else {
+            parent::convertValidationExceptionToResponse($e, $request);
+        }
+    }
+
+
+    public function convertExceptionToArray(Throwable $e)
+    {
+        return config('app.debug') ? [
+            'status' => false,
+            'messages' => [$e->getMessage()],
+            'exception' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->map(function ($trace) {
+                return Arr::except($trace, ['args']);
+            })->all(),
+        ] : [
+            'status' => false,
+            'messages' => [$e->getMessage()],
+        ];
     }
 }

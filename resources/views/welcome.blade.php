@@ -17,28 +17,29 @@
         <div id="root"></div>
 
         {{-- <div class="page">
-            <div class="left-side">
-                <span class="left-side__52">52</span>
-                <img src="/images/whale.png" class="logo" alt="Whale logo" />
-                <span class="left-side__54">54</span>
-            </div>
-            <div class="right-side">
-                <form action="#" class="register-form" method="post">
-                    <h3 class="header-3">Регистрация</h3>
-                    <input type="text" class="input email error" name="email" placeholder="Ваша почта"/>
-                    <input type="text" class="input nickname" name="nickname" placeholder="Ваш всевдоним"/>
-                    <input type="password" class="input password" name="password" placeholder="Пароль"/>
-                    <input type="password" class="input password-confirm" name="password-confirm" placeholder="Повторите пароль"/>
+            <div class="sidebar">
+                <div class="sidebar__header">
+                    <div class="sidebar__settings">
+                        <img src="/images/settings.svg" alt="settings" />
+                    </div>
+                    <div class="sidebar__search">
+                        <img src="/images/search.svg" alt="search" />
+                        <input type="text" name="search" />
+                    </div>
+                </div>
 
-                    <label for="agreement-checkbox" class="agreement-container">
-                        <input type="checkbox" id="agreement-checkbox" class="agreement-checkbox" name="user-agreement"/>
-                        <span class="agreement-text">Я согласен с пользовательским соглашением</span>
-                    </label>
-                    
-                    <button type="button" class="btn btn-primary">Зарегистрироваться</button>
-
-                    <a href="/login" class="register-form__link link">У меня уже есть аккаунт</a>
-                </form>
+                <div class="sidebar__users-container">
+                    <div class="sidebar__user-container">
+                        <img src="/images/avatar.jpg" class="sidebar__user-avatar" alt="Avatar">
+                        <div class="sidebar__user-message">
+                            <div class="sidebar__user-info">
+                                <span class="sidebar__user-name">dizzliker</span>
+                                <span class="sidebar__msg-time">12:43</span>
+                            </div>
+                            <span class="sidebar__msg-text">Привет как дела</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div> --}}
         

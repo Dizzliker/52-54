@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchRegister } from "../../actions";
-import {FormValidator, RegisterService} from "../../services";
+import {FormValidator, PageService, RegisterService} from "../../services";
 
 class RegisterForm extends Component {
     constructor(props) {
@@ -21,6 +21,13 @@ class RegisterForm extends Component {
         };
         this.formValidator = new FormValidator();
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+        PageService.setTitle('Регистрация');
+        // setInterval(() => {
+        //     console.log(this.props.authUser);
+        // }, 2000);
     }
 
     handleChange(event) {
@@ -70,10 +77,10 @@ class RegisterForm extends Component {
             }
         });
 
-        if (!success) {
-            this.setState({formErrors: errors});
-            return;
-        }
+        // if (!success) {
+        //     this.setState({formErrors: errors});
+        //     return;
+        // }
 
         this.props.fetchRegister(this.state.formData);
     }

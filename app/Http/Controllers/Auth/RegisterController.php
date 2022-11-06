@@ -4,23 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use DateTimeImmutable;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request) {
-        $fields = $request->validate([
-            'nickname'        => 'required|unique:users',
-            'email'           => 'required|email|unique:users|min:9',
-            'password'        => 'required_with:passwordConfirm|same:passwordConfirm|min:8',
-            'passwordConfirm' => 'required|min:8',
-            'userTimezone'    => 'required',
-        ]);
+    public function register(RegisterRequest $request) {
+        $fields = $request->validated();
 
-        $createdAt = (new DateTimeImmutable())->getTimestamp();
+        $createdAt = User::getNowTimestamp();
 
         $user = User::create([
             'nickname'   => $fields['nickname'],

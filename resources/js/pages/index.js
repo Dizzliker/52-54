@@ -1,7 +1,5 @@
-import RegisterPage from "./register-page";
-import LoginPage from './login-page';
+import AuthPage from "./auth-page";
 
 export {
-    LoginPage,
-    RegisterPage,
+    AuthPage,
 }

@@ -1,8 +1,7 @@
-import React from 'react';
 import {createRoot} from 'react-dom/client';
 import { Provider } from 'react-redux';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import {RegisterPage, LoginPage} from '../pages';
+import {BrowserRouter} from 'react-router-dom';
+import { AuthPage } from '../pages';
 import store from './store';
 
 const App = () => {
@@ -10,10 +9,7 @@ const App = () => {
         <Provider store={store}>
             <BrowserRouter>
                 <div className="page">
-                    <Routes>
-                        <Route path="/"         element={<LoginPage />}/>
-                        <Route path="/register" element={<RegisterPage />}/>
-                    </Routes>
+                    <AuthPage />
                 </div>
             </BrowserRouter>
         </Provider>

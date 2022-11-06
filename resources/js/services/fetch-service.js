@@ -1,9 +1,11 @@
-import { isObject } from "./check-types";
+import { isEmptyObject, isObject } from "./check-types";
+import FormValidator from "./form-validator";
 
 export default class FetchService {
     constructor() {
         this._api = `${location.origin}/api`;
         this.csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        this.formValidator = new FormValidator();
     }
 
     getData = async (url) => {

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use DateTimeImmutable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -46,5 +47,9 @@ class User extends Authenticatable
         $user = User::where('email', $email)->first();
 
         return $user && Hash::check($password, $user->password) ? $user : null;
+    }
+
+    public static function getNowTimestamp() {
+        return (new DateTimeImmutable())->getTimestamp();
     }
 }

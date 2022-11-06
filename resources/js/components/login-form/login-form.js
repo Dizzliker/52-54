@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { fetchLogin } from "../../actions";
-import { FormValidator, LoginService } from "../../services";
+import { FormValidator, LoginService, PageService } from "../../services";
 
 class LoginForm extends Component {
     constructor(props) {
@@ -18,6 +18,10 @@ class LoginForm extends Component {
         };
         this.formValidator = new FormValidator();
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount() {
+        PageService.setTitle('Авторизация');
     }
 
     handleChange(event) {
