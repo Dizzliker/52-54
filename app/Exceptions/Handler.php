@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler
     {
         if($e instanceof ValidationException && $request->expectsJson()) {
             return response()->json([
-                "status" => false,
+                "success" => false,
                 "errors" =>  $e->errors()
             ], 422);
         } else {
@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
     public function convertExceptionToArray(Throwable $e)
     {
         return config('app.debug') ? [
-            'status' => false,
+            'success' => false,
             'messages' => [$e->getMessage()],
             'exception' => get_class($e),
             'file' => $e->getFile(),
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
                 return Arr::except($trace, ['args']);
             })->all(),
         ] : [
-            'status' => false,
+            'success' => false,
             'messages' => [$e->getMessage()],
         ];
     }

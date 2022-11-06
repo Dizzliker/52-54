@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'nickname'        => 'required|unique:users:max25',
+            'nickname'        => 'required|unique:users|max:25',
             'email'           => 'required|email|unique:users',
             'password'        => 'required|required_with:passwordConfirm|same:passwordConfirm|min:8',
             'passwordConfirm' => 'required|min:8',
@@ -35,7 +35,7 @@ class RegisterRequest extends FormRequest
     public function messages() {
         return [
             'required'        => 'Поле обязательно для заполнения',
-            'nickname.unique' => 'Данный пседводим уже занят',
+            'nickname.unique' => 'Данный псевдоним уже занят',
             'email.unique'    => 'Данная электронная почта уже занята',
             'min'             => 'Минимальная длина поля :min символов',
             'max'             => 'Максимальная длина поля :max символов',

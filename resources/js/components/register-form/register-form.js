@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {connect} from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchRegister } from "../../actions";
+import { fetchRegister, registerFailure } from "../../actions";
 import {FormValidator, PageService, RegisterService} from "../../services";
 
-class RegisterForm extends Component {
+class RegisterForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,9 +25,6 @@ class RegisterForm extends Component {
 
     componentDidMount() {
         PageService.setTitle('Регистрация');
-        // setInterval(() => {
-        //     console.log(this.props.authUser);
-        // }, 2000);
     }
 
     handleChange(event) {
@@ -50,6 +47,7 @@ class RegisterForm extends Component {
         e.preventDefault();
 
         const {email, nickname, password, passwordConfirm, userAgreement, userTimezone} = this.state.formData;
+        const {setFormError, fetchRegister} = this.props;
         const {success, errors} = this.formValidator.validate({
             email: {
                 value: email,
@@ -77,17 +75,20 @@ class RegisterForm extends Component {
             }
         });
 
-        // if (!success) {
-        //     this.setState({formErrors: errors});
-        //     return;
-        // }
+        if (!success) {
+            setFormError({
+                success,
+                errors,
+            });
+            return;
+        }
 
-        this.props.fetchRegister(this.state.formData);
+        fetchRegister(this.state.formData);
     }
 
     render() {
         const {email, nickname, password, passwordConfirm, userAgreement, userTimezone} = this.state.formData;
-        const {emailError, nicknameError, passwordError, passwordConfirmError} = this.state.formErrors;
+        const {emailError, nicknameError, passwordError, passwordConfirmError} = this.props.authUser.errors;
 
         return (
             <div className="register-container">
@@ -96,39 +97,39 @@ class RegisterForm extends Component {
 
                     <div className="input-field">
                         <input type="text" className="input email error" name="email" value={email} onChange={this.handleChange} placeholder="Ваша почта"/>
-                        {emailError && 
+                        {emailError ? 
                             <div className="input__error-container">
                                 <img className="input__error-icon" src="/images/danger-icon.svg" alt="Внимание!"/>
                                 <span className="input__error-text">{emailError}</span>
                             </div>
-                        }
+                        : null}
                     </div>
                     <div className="input-field">
                         <input type="text" className="input nickname" name="nickname" value={nickname} onChange={this.handleChange} placeholder="Ваш всевдоним"/>
-                        {nicknameError && 
+                        {nicknameError ?
                             <div className="input__error-container">
                                 <img className="input__error-icon" src="/images/danger-icon.svg" alt="Внимание!"/> 
                                 <span className="input__error-text">{nicknameError}</span>
                             </div>
-                        }
+                        : null}
                     </div>
                     <div className="input-field">
                         <input type="password" className="input password" name="password" value={password} onChange={this.handleChange} placeholder="Пароль"/>
-                        {passwordError && 
+                        {passwordError ? 
                             <div className="input__error-container">
                                 <img className="input__error-icon" src="/images/danger-icon.svg" alt="Внимание!"/> 
                                 <span className="input__error-text">{passwordError}</span>
                             </div>
-                        }
+                        : null}
                     </div>
                     <div className="input-field">
                         <input type="password" className="input password-confirm" name="passwordConfirm" value={passwordConfirm} onChange={this.handleChange} placeholder="Повторите пароль"/>
-                        {passwordConfirmError && 
+                        {passwordConfirmError ?
                             <div className="input__error-container">
                                 <img className="input__error-icon" src="/images/danger-icon.svg" alt="Внимание!"/> 
                                 <span className="input__error-text">{passwordConfirmError}</span>
                             </div>
-                        }
+                        : null}
                     </div>
 
                     <input type="hidden" name="userTimezone" value={userTimezone} />
@@ -158,6 +159,7 @@ const mapStateToProps = ({authUser}) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         fetchRegister: fetchRegister(new RegisterService(), dispatch),
+        setFormError: (error) => dispatch(registerFailure(error)),
     }, dispatch);
 };
 

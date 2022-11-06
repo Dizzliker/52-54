@@ -8477,11 +8477,9 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "fetchLogin": () => (/* binding */ fetchLogin),
-/* harmony export */   "fetchRegister": () => (/* binding */ fetchRegister)
+/* harmony export */   "fetchRegister": () => (/* binding */ fetchRegister),
+/* harmony export */   "registerFailure": () => (/* binding */ registerFailure)
 /* harmony export */ });
-/* harmony import */ var _services_check_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/check-types */ "./resources/js/services/check-types.js");
-
-
 var registerRequested = function registerRequested() {
   return {
     type: 'FETCH_REGISTER_REQUEST'
@@ -8527,15 +8525,10 @@ var fetchRegister = function fetchRegister(registerService, dispatch) {
     return function () {
       dispatch(registerRequested());
       registerService.fetchRegister(formData).then(function (response) {
-        var errors = response.errors,
-            data = response.data;
-
-        if (!(0,_services_check_types__WEBPACK_IMPORTED_MODULE_0__.isEmptyObject)(errors)) {
-          dispatch(registerFailure(response));
-        }
-
-        if (data) {
+        if (response.success) {
           dispatch(registerSuccess(response));
+        } else {
+          dispatch(registerFailure(response));
         }
       })["catch"](function (error) {
         dispatch(registerFailure(error));
@@ -8967,8 +8960,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var RegisterForm = /*#__PURE__*/function (_Component) {
-  _inherits(RegisterForm, _Component);
+var RegisterForm = /*#__PURE__*/function (_React$Component) {
+  _inherits(RegisterForm, _React$Component);
 
   var _super = _createSuper(RegisterForm);
 
@@ -8988,6 +8981,9 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           passwordConfirm = _this$state$formData.passwordConfirm,
           userAgreement = _this$state$formData.userAgreement,
           userTimezone = _this$state$formData.userTimezone;
+      var _this$props = _this.props,
+          setFormError = _this$props.setFormError,
+          fetchRegister = _this$props.fetchRegister;
 
       var _this$formValidator$v = _this.formValidator.validate({
         email: {
@@ -9016,13 +9012,17 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
         }
       }),
           success = _this$formValidator$v.success,
-          errors = _this$formValidator$v.errors; // if (!success) {
-      //     this.setState({formErrors: errors});
-      //     return;
-      // }
+          errors = _this$formValidator$v.errors;
 
+      if (!success) {
+        setFormError({
+          success: success,
+          errors: errors
+        });
+        return;
+      }
 
-      _this.props.fetchRegister(_this.state.formData);
+      fetchRegister(_this.state.formData);
     });
 
     _this.state = {
@@ -9044,9 +9044,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
   _createClass(RegisterForm, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      _services__WEBPACK_IMPORTED_MODULE_3__.PageService.setTitle('Регистрация'); // setInterval(() => {
-      //     console.log(this.props.authUser);
-      // }, 2000);
+      _services__WEBPACK_IMPORTED_MODULE_3__.PageService.setTitle('Регистрация');
     }
   }, {
     key: "handleChange",
@@ -9068,11 +9066,11 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
           passwordConfirm = _this$state$formData2.passwordConfirm,
           userAgreement = _this$state$formData2.userAgreement,
           userTimezone = _this$state$formData2.userTimezone;
-      var _this$state$formError = this.state.formErrors,
-          emailError = _this$state$formError.emailError,
-          nicknameError = _this$state$formError.nicknameError,
-          passwordError = _this$state$formError.passwordError,
-          passwordConfirmError = _this$state$formError.passwordConfirmError;
+      var _this$props$authUser$ = this.props.authUser.errors,
+          emailError = _this$props$authUser$.emailError,
+          nicknameError = _this$props$authUser$.nicknameError,
+          passwordError = _this$props$authUser$.passwordError,
+          passwordConfirmError = _this$props$authUser$.passwordConfirmError;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "register-container",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
@@ -9091,7 +9089,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
               value: email,
               onChange: this.handleChange,
               placeholder: "\u0412\u0430\u0448\u0430 \u043F\u043E\u0447\u0442\u0430"
-            }), emailError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            }), emailError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "input__error-container",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                 className: "input__error-icon",
@@ -9101,7 +9099,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
                 className: "input__error-text",
                 children: emailError
               })]
-            })]
+            }) : null]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "input-field",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
@@ -9111,7 +9109,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
               value: nickname,
               onChange: this.handleChange,
               placeholder: "\u0412\u0430\u0448 \u0432\u0441\u0435\u0432\u0434\u043E\u043D\u0438\u043C"
-            }), nicknameError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            }), nicknameError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "input__error-container",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                 className: "input__error-icon",
@@ -9121,7 +9119,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
                 className: "input__error-text",
                 children: nicknameError
               })]
-            })]
+            }) : null]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "input-field",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
@@ -9131,7 +9129,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
               value: password,
               onChange: this.handleChange,
               placeholder: "\u041F\u0430\u0440\u043E\u043B\u044C"
-            }), passwordError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            }), passwordError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "input__error-container",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                 className: "input__error-icon",
@@ -9141,7 +9139,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
                 className: "input__error-text",
                 children: passwordError
               })]
-            })]
+            }) : null]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
             className: "input-field",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
@@ -9151,7 +9149,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
               value: passwordConfirm,
               onChange: this.handleChange,
               placeholder: "\u041F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0435 \u043F\u0430\u0440\u043E\u043B\u044C"
-            }), passwordConfirmError && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            }), passwordConfirmError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
               className: "input__error-container",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
                 className: "input__error-icon",
@@ -9161,7 +9159,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
                 className: "input__error-text",
                 children: passwordConfirmError
               })]
-            })]
+            }) : null]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
             type: "hidden",
             name: "userTimezone",
@@ -9195,7 +9193,7 @@ var RegisterForm = /*#__PURE__*/function (_Component) {
   }]);
 
   return RegisterForm;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+}((react__WEBPACK_IMPORTED_MODULE_0___default().Component));
 
 ;
 
@@ -9208,7 +9206,10 @@ var mapStateToProps = function mapStateToProps(_ref) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return (0,redux__WEBPACK_IMPORTED_MODULE_6__.bindActionCreators)({
-    fetchRegister: (0,_actions__WEBPACK_IMPORTED_MODULE_2__.fetchRegister)(new _services__WEBPACK_IMPORTED_MODULE_3__.RegisterService(), dispatch)
+    fetchRegister: (0,_actions__WEBPACK_IMPORTED_MODULE_2__.fetchRegister)(new _services__WEBPACK_IMPORTED_MODULE_3__.RegisterService(), dispatch),
+    setFormError: function setFormError(error) {
+      return dispatch((0,_actions__WEBPACK_IMPORTED_MODULE_2__.registerFailure)(error));
+    }
   }, dispatch);
 };
 
@@ -9405,23 +9406,29 @@ _defineProperty(User, "update", function (state, action) {
   if (state === undefined) {
     User.setData({
       loading: true,
-      error: false
+      error: false,
+      errors: {}
     });
     return User.getData();
   }
+
+  console.log(action.type);
+  console.log(action.payload);
 
   switch (action.type) {
     case 'FETCH_REGISTER_REQUEST':
       User.setData({
         loading: true,
-        error: false
+        error: false,
+        errors: {}
       });
       return User.getData();
 
     case 'FETCH_REGISTER_SUCCESS':
       User.setData(_objectSpread(_objectSpread({}, action.payload), {}, {
         loading: false,
-        error: false
+        error: false,
+        errors: {}
       }));
       return User.getData();
 

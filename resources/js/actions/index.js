@@ -1,5 +1,3 @@
-import { isEmptyObject } from "../services/check-types";
-
 const registerRequested = () => {
     return {
         type: 'FETCH_REGISTER_REQUEST'
@@ -44,13 +42,11 @@ const fetchRegister = (registerService, dispatch) => (formData) => () => {
     dispatch(registerRequested());
     registerService.fetchRegister(formData)
         .then((response) => {
-            const {errors, data} = response;
-            if (!isEmptyObject(errors)) {
+            if (response.success) {
+                dispatch(registerSuccess(response));
+            } else {
                 dispatch(registerFailure(response));
             }
-            if (data) {
-                dispatch(registerSuccess(response));
-            } 
         })
         .catch(error => {
             dispatch(registerFailure(error));
@@ -71,4 +67,5 @@ const fetchLogin = (loginService, dispatch) => (formData) => () => {
 export {
     fetchRegister,
     fetchLogin,
+    registerFailure,
 };

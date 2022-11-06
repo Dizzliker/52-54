@@ -19,15 +19,18 @@ export default class User {
             this.setData({
                 loading: true,
                 error: false,
+                errors: {},
             });
             return this.getData();
         }
-
+        console.log(action.type);
+        console.log(action.payload);
         switch(action.type) {
             case 'FETCH_REGISTER_REQUEST':
                 this.setData({
                     loading: true,
                     error: false,
+                    errors: {},
                 });
 
                 return this.getData();
@@ -36,6 +39,7 @@ export default class User {
                     ...action.payload,
                     loading: false,
                     error: false,
+                    errors: {},
                 });
 
                 return this.getData();
