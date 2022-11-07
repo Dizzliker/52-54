@@ -17,7 +17,6 @@ class RegisterForm extends React.Component {
                 userAgreement: true,
                 userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             },
-            formErrors: {},
         };
         this.formValidator = new FormValidator();
         this.handleChange = this.handleChange.bind(this);

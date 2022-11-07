@@ -56,8 +56,12 @@ const fetchRegister = (registerService, dispatch) => (formData) => () => {
 const fetchLogin = (loginService, dispatch) => (formData) => () => {
     dispatch(loginRequested());
     loginService.fetchLogin(formData)
-        .then(({data}) => {
-            dispatch(loginSuccess(data));
+        .then((response) => {
+            if (response.success) {
+                dispatch(loginSuccess(response));
+            } else {
+                dispatch(loginFailure(response));
+            }
         })  
         .catch(error => {
             dispatch(loginFailure(error));
@@ -68,4 +72,5 @@ export {
     fetchRegister,
     fetchLogin,
     registerFailure,
+    loginFailure,
 };

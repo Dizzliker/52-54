@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { fetchLogin } from "../../actions";
+import { fetchLogin, loginFailure } from "../../actions";
 import { FormValidator, LoginService, PageService } from "../../services";
 
 class LoginForm extends Component {
@@ -44,6 +44,7 @@ class LoginForm extends Component {
         e.preventDefault();
 
         const {email, password} = this.state.formData;
+        const {setFormError, fetchLogin} = this.props;
         const {success, errors} = this.formValidator.validate({
             email: {
                 value: email,
@@ -55,17 +56,20 @@ class LoginForm extends Component {
             }
         });
 
-        if (!success) {
-            this.setState({formErrors: errors});
-            return;
-        }
+        // if (!success) {
+        //     setFormError({
+        //         success,
+        //         errors,
+        //     });
+        //     return;
+        // }
 
-        this.props.fetchLogin(this.state.formData);
+        fetchLogin(this.state.formData);
     }
 
     render() {
         const {email, password, userRemember} = this.state.formData;
-        const {emailError, passwordError} = this.state.formErrors;
+        const {emailError, passwordError} = this.props.authUser.errors;
 
         return (
             <div className="login-container">
@@ -118,6 +122,7 @@ const mapStateToProps = ({authUser}) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         fetchLogin: fetchLogin(new LoginService(), dispatch), 
+        setFormError: (error) => loginFailure(error),
     }, dispatch);
 };
 

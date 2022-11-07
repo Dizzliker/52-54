@@ -55,6 +55,7 @@ export default class User {
                 this.setData({
                     loading: true,
                     error: false,
+                    errors: {},
                 });
 
                 return this.getData();
@@ -69,7 +70,8 @@ export default class User {
             case 'FETCH_LOGIN_FAILURE':
                 this.setData({
                     loading: false,
-                    error: action.payload,
+                    error: true,
+                    ...action.payload,
                 });
 
                 return this.getData();

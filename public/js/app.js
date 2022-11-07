@@ -8478,6 +8478,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "fetchLogin": () => (/* binding */ fetchLogin),
 /* harmony export */   "fetchRegister": () => (/* binding */ fetchRegister),
+/* harmony export */   "loginFailure": () => (/* binding */ loginFailure),
 /* harmony export */   "registerFailure": () => (/* binding */ registerFailure)
 /* harmony export */ });
 var registerRequested = function registerRequested() {
@@ -8541,9 +8542,12 @@ var fetchLogin = function fetchLogin(loginService, dispatch) {
   return function (formData) {
     return function () {
       dispatch(loginRequested());
-      loginService.fetchLogin(formData).then(function (_ref) {
-        var data = _ref.data;
-        dispatch(loginSuccess(data));
+      loginService.fetchLogin(formData).then(function (response) {
+        if (response.success) {
+          dispatch(loginSuccess(response));
+        } else {
+          dispatch(loginFailure(response));
+        }
       })["catch"](function (error) {
         dispatch(loginFailure(error));
       });
@@ -8723,6 +8727,9 @@ var LoginForm = /*#__PURE__*/function (_Component) {
       var _this$state$formData = _this.state.formData,
           email = _this$state$formData.email,
           password = _this$state$formData.password;
+      var _this$props = _this.props,
+          setFormError = _this$props.setFormError,
+          fetchLogin = _this$props.fetchLogin;
 
       var _this$formValidator$v = _this.formValidator.validate({
         email: {
@@ -8735,17 +8742,16 @@ var LoginForm = /*#__PURE__*/function (_Component) {
         }
       }),
           success = _this$formValidator$v.success,
-          errors = _this$formValidator$v.errors;
+          errors = _this$formValidator$v.errors; // if (!success) {
+      //     setFormError({
+      //         success,
+      //         errors,
+      //     });
+      //     return;
+      // }
 
-      if (!success) {
-        _this.setState({
-          formErrors: errors
-        });
 
-        return;
-      }
-
-      _this.props.fetchLogin(_this.state.formData);
+      fetchLogin(_this.state.formData);
     });
 
     _this.state = {
@@ -8783,9 +8789,9 @@ var LoginForm = /*#__PURE__*/function (_Component) {
           email = _this$state$formData2.email,
           password = _this$state$formData2.password,
           userRemember = _this$state$formData2.userRemember;
-      var _this$state$formError = this.state.formErrors,
-          emailError = _this$state$formError.emailError,
-          passwordError = _this$state$formError.passwordError;
+      var _this$props$authUser$ = this.props.authUser.errors,
+          emailError = _this$props$authUser$.emailError,
+          passwordError = _this$props$authUser$.passwordError;
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "login-container",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
@@ -8879,7 +8885,10 @@ var mapStateToProps = function mapStateToProps(_ref) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return (0,redux__WEBPACK_IMPORTED_MODULE_6__.bindActionCreators)({
-    fetchLogin: (0,_actions__WEBPACK_IMPORTED_MODULE_2__.fetchLogin)(new _services__WEBPACK_IMPORTED_MODULE_3__.LoginService(), dispatch)
+    fetchLogin: (0,_actions__WEBPACK_IMPORTED_MODULE_2__.fetchLogin)(new _services__WEBPACK_IMPORTED_MODULE_3__.LoginService(), dispatch),
+    setFormError: function setFormError(error) {
+      return (0,_actions__WEBPACK_IMPORTED_MODULE_2__.loginFailure)(error);
+    }
   }, dispatch);
 };
 
@@ -9033,8 +9042,7 @@ var RegisterForm = /*#__PURE__*/function (_React$Component) {
         passwordConfirm: '',
         userAgreement: true,
         userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-      },
-      formErrors: {}
+      }
     };
     _this.formValidator = new _services__WEBPACK_IMPORTED_MODULE_3__.FormValidator();
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
@@ -9442,7 +9450,8 @@ _defineProperty(User, "update", function (state, action) {
     case 'FETCH_LOGIN_REQUEST':
       User.setData({
         loading: true,
-        error: false
+        error: false,
+        errors: {}
       });
       return User.getData();
 
@@ -9454,10 +9463,10 @@ _defineProperty(User, "update", function (state, action) {
       return User.getData();
 
     case 'FETCH_LOGIN_FAILURE':
-      User.setData({
+      User.setData(_objectSpread({
         loading: false,
-        error: action.payload
-      });
+        error: true
+      }, action.payload));
       return User.getData();
 
     default:
