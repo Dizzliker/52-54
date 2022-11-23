@@ -56,13 +56,13 @@ class LoginForm extends Component {
             }
         });
 
-        // if (!success) {
-        //     setFormError({
-        //         success,
-        //         errors,
-        //     });
-        //     return;
-        // }
+        if (!success) {
+            setFormError({
+                success,
+                errors,
+            });
+            return;
+        }
 
         fetchLogin(this.state.formData);
     }

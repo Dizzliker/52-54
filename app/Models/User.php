@@ -48,8 +48,4 @@ class User extends Authenticatable
 
         return $user && Hash::check($password, $user->password) ? $user : null;
     }
-
-    public static function getNowTimestamp() {
-        return (new DateTimeImmutable())->getTimestamp();
-    }
 }

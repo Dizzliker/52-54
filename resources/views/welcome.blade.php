@@ -15,33 +15,6 @@
     </head>
     <body>
         <div id="root"></div>
-
-        {{-- <div class="page">
-            <div class="sidebar">
-                <div class="sidebar__header">
-                    <div class="sidebar__settings">
-                        <img src="/images/settings.svg" alt="settings" />
-                    </div>
-                    <div class="sidebar__search">
-                        <img src="/images/search.svg" alt="search" />
-                        <input type="text" name="search" />
-                    </div>
-                </div>
-
-                <div class="sidebar__users-container">
-                    <div class="sidebar__user-container">
-                        <img src="/images/avatar.jpg" class="sidebar__user-avatar" alt="Avatar">
-                        <div class="sidebar__user-message">
-                            <div class="sidebar__user-info">
-                                <span class="sidebar__user-name">dizzliker</span>
-                                <span class="sidebar__msg-time">12:43</span>
-                            </div>
-                            <span class="sidebar__msg-text">Привет как дела</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         
         <script src="{{asset('/js/app.js')}}"></script>
     </body>

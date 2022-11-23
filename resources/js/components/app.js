@@ -2,6 +2,7 @@ import {createRoot} from 'react-dom/client';
 import { Provider } from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import { AuthPage } from '../pages';
+import {ChatPage} from '../pages';
 import store from './store';
 
 const App = () => {
@@ -9,7 +10,8 @@ const App = () => {
         <Provider store={store}>
             <BrowserRouter>
                 <div className="page">
-                    <AuthPage />
+                    {/* <AuthPage /> */}
+                    <ChatPage />
                 </div>
             </BrowserRouter>
         </Provider>
