@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use DateTimeImmutable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Auth;
@@ -25,8 +24,14 @@ class RegisterController extends Controller
             'created_at' => $createdAt,
         ]);
 
-        Auth::guard()->attempt($request->only('email', 'password'), true);
+        if (Auth::attempt($request->only('email', 'password'), true)) {
+            $request->session()->regenerate();
+        }
         
-        return response(['success' => true, 'data' => $user]);
+        return response([
+            'success' => true, 
+            'data'    => $user, 
+            'token'   => $user->createToken('userToken')->plainTextToken,
+        ]);
     }
 }

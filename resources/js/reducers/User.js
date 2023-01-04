@@ -20,6 +20,8 @@ export default class User {
                 loading: true,
                 error: false,
                 errors: {},
+                avatar: '/images/avatar.jpg',
+                nickname: 'dizzliker',
             });
             return this.getData();
         }

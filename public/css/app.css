@@ -371,7 +371,7 @@ body {
 .chat .chat__header {
   height: 55px;
   display: grid;
-  grid-template-columns: 55px 1fr 55px;
+  grid-template-columns: 55px 1fr 185px 55px;
   grid-gap: 10px;
 }
 
@@ -386,6 +386,31 @@ body {
   font-size: 1.12rem;
   color: var(--main-text-dark);
   padding-left: 25px;
+}
+
+.chat .chat__header .chat__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-between;
+}
+
+ .icon-container {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--secondary);
+  background-color: var(--main-text-white);
+  transition: var(--animation-transition);
+  cursor: pointer;
+}
+
+.icon-container:hover {
+  transition: var(--animation-transition);
+  background-color: var(--placeholder);
 }
 
 .chat .chat__header .chat__btn-more-options {
@@ -415,7 +440,6 @@ body {
   border-radius: var(--border-radius);
   background-color: var(--main-text-white);
   margin: 10px 0;
-  padding: 10px;
 }
 
 .chat .chat__container .chat__msg-date-container {
@@ -427,7 +451,7 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--main-text-dark);
-  margin: 0 auto 10px;
+  margin: 10px auto 0 auto;
 }
 
 .chat .chat__container .chat__msg-text-container {
@@ -437,10 +461,20 @@ body {
   border-radius: var(--border-radius);
   border: 2px solid var(--secondary);
   color: var(--main-text-dark);
+  background-color: var(--main-text-white);
 }
 
 .chat .chat__container .chat__msg-container {
+  width: 100%;
+  cursor: pointer;
   gap: 5px;
+  padding: 10px;
+  transition: var(--animation-transition);
+}
+
+.chat .chat__container .chat__msg-container:hover {
+  background-color: var(--placeholder);
+  transition: var(--animation-transition);
 }
 
 .chat .chat__container .chat__msg-container.inc {
@@ -451,6 +485,7 @@ body {
 .chat .chat__container .chat__msg-container.out {
   display: flex;
   align-items: flex-end;
+  justify-content: flex-end;
   margin-left: auto;
 }
 

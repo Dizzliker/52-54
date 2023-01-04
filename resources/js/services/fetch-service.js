@@ -1,11 +1,9 @@
-import { isEmptyObject, isObject } from "./check-types";
-import FormValidator from "./form-validator";
+import { isObject } from "./check-types";
 
 export default class FetchService {
     constructor() {
         this._api = `${location.origin}/api`;
-        this.csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        this.formValidator = new FormValidator();
+        this.csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     }
 
     getData = async (url) => {
@@ -14,7 +12,7 @@ export default class FetchService {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "X-CSRF-TOKEN": this.csrf_token,
+                    "X-CSRF-TOKEN": this.csrfToken,
                     "Authorization": `Bearer ${Cookie.getToken()}`,
                 }
             });
@@ -35,7 +33,7 @@ export default class FetchService {
                 method: "POST",
                 headers: {
                     "Accept": "application/json",
-                    "X-CSRF-TOKEN": this.csrf_token,
+                    "X-CSRF-TOKEN": this.csrfToken,
                     "Authorization": '',
                 },
                 body: this.toFormData(data),
@@ -50,6 +48,7 @@ export default class FetchService {
         if (!isObject(data)) {
             return console.error('В качестве данных принимается только объект!');
         }
+        
         const formData = new FormData();
         
         for (const key in data) {

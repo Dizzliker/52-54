@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/user/list', [UserController::class, 'getUserList']);
+    Route::get('/user/search/{nickname?}', [UserController::class, 'searchUserByNickname']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('/message/send', [MessageController::class, 'sendMessage']);
 });
 
 Route::post('/register', [RegisterController::class, 'register']);
