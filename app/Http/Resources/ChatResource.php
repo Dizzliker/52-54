@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Actions\DateAction;
+use App\Http\Services\DateService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ChatResource extends JsonResource
@@ -20,7 +20,7 @@ class ChatResource extends JsonResource
             'outUserId' => $this->out_user_id,
             'text'      => $this->text,
             'isRead'    => $this->is_read,
-            'createdAt' => DateAction::getDateFromTimestamp($this->created_at)
+            'createdAt' => DateService::getDateFromTimestamp($this->created_at)
         ];
     }
 }

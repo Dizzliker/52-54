@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Actions;
+namespace App\Http\Services;
 
 use Carbon\Carbon;
 
-class DateAction {
-    public static function getDateFromTimestamp(int $timestamp,
-                                                string $format = null,
-                                                string $timezone = null) {
+class DateService {
+    public static function getDateFromTimestamp(int $timestamp, string $format = null, string $timezone = null) {
         if ($timezone === null) {
             $timezone = auth()->user()->timezone;
         }
@@ -17,5 +15,9 @@ class DateAction {
         }
 
         return Carbon::createFromTimestamp($timestamp)->timezone($timezone)->format($format);
+    }
+
+    public static function getNowTimestamp() : int {
+        return (new DateTimeImmutable())->getTimestamp();
     }
 }

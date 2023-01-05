@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageResource;
+use App\Http\Services\DateService;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class MessageController extends Controller
     public function sendMessage(MessageRequest $request) {
         try {
             $fields = $request->validated();
-            $createdAt = Message::getNowTimestamp();
+            $createdAt = DateService::getNowTimestamp();
 
             $message = Message::create([
                 'inc_user_id' => $fields['incUserId'],

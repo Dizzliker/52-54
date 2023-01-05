@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Services\DateService;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
@@ -13,7 +14,7 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request) {
         $fields = $request->validated();
 
-        $createdAt = User::getNowTimestamp();
+        $createdAt = DateService::getNowTimestamp();
 
         $user = User::create([
             'nickname'   => $fields['nickname'],
@@ -27,10 +28,10 @@ class RegisterController extends Controller
         if (Auth::attempt($request->only('email', 'password'), true)) {
             $request->session()->regenerate();
         }
-        
+
         return response([
-            'success' => true, 
-            'data'    => $user, 
+            'success' => true,
+            'data'    => $user,
             'token'   => $user->createToken('userToken')->plainTextToken,
         ]);
     }

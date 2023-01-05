@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Actions\DateAction;
+use App\Http\Services\DateService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MessageResource extends JsonResource
@@ -20,7 +20,7 @@ class MessageResource extends JsonResource
             'text'      => $this->text,
             'incUserId' => $this->inc_user_id,
             'isRead'    => $this->is_read,
-            'createdAt' => DateAction::getDateFromTimestamp($this->created_at, 'H:i'),
+            'createdAt' => DateService::getDateFromTimestamp($this->created_at, 'H:i'),
         ];
     }
 }

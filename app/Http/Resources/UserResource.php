@@ -2,8 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Actions\DateAction;
-use Carbon\Carbon;
+use App\Http\Services\DateService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -19,8 +18,8 @@ class UserResource extends JsonResource
         return [
             'id'         => $this->id,
             'nickname'   => $this->nickname,
-            'updated_at' => DateAction::getDateFromTimestamp($this->updated_at),
-            'created_at' => DateAction::getDateFromTimestamp($this->created_at),
+            'updated_at' => DateService::getDateFromTimestamp($this->updated_at),
+            'created_at' => DateService::getDateFromTimestamp($this->created_at),
         ];
     }
 }
