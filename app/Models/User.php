@@ -80,13 +80,22 @@ class User extends Authenticatable
 
     public static function searchByNickname(string $nickname) : UserResource {
         $users = DB::table('users', 'u')
-                    ->where('u.nickname', 'like', "%{$nickname}%")
-                    ->select('u.id',
-                                    'u.nickname',
-                                    'u.updated_at',
-                                    'u.created_at')
-                    ->get();
+                   ->where('u.nickname', 'like', "%{$nickname}%")
+                   ->select('u.id',
+                             'u.nickname',
+                             'u.updated_at',
+                             'u.created_at')
+                   ->get();
 
         return UserResource::collection($users);
+    }
+
+    public static function getCompanionById(int $companionId) {
+        return DB::table('users', 'u')
+                 ->where('u.id', $companionId)
+                 ->select('u.id as companionId',
+                           'u.nickname',
+                           'u.avatar')
+                 ->get();
     }
 }

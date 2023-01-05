@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('/user/list', [UserController::class, 'getUserList']);
     Route::get('/user/search/{nickname?}', [UserController::class, 'searchUserByNickname']);
 
+    Route::get('/chat/{companionId?}', [MessageController::class, 'getChat']);
     Route::post('/message/send', [MessageController::class, 'sendMessage']);
 });
 
